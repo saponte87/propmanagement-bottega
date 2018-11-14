@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
-import SignupForm from './signupForm';
+import SignupForm from './signinForm';
 
 class Signup extends Component {
 
@@ -11,6 +11,10 @@ class Signup extends Component {
             console.log('navigate to dashboard');
             this.props.history.push('/dashboard');
         })
+    }
+
+    componentDidMount() {
+        this.props.updateHeader('Welcome to HOA Manager!', 'Please login to continue', false);
     }
 
     render() {

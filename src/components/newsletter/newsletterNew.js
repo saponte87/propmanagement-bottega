@@ -1,20 +1,48 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import NewNewsletterForm from './newsletterNewForm';
+import { connect } from 'react-redux';
+import * as actions from '../../actions';
+
+import NewNewsletterForm from "./newsletterNewForm";
 
 class NewNewsletter extends Component {
 
-    onSubmit = (fields) => {
-        console.log('trying to handle submit')
-    }
+  onSubmit = fields => {
 
-    render() {
-        return (
-            <div className='new-newsletter'>
-                <SigninForm onSubmit={(event) => this.onSubmit(event)}/>
-            </div>
-        )
-    }
+    const { title, body, image } = fields;
+
+    var formData = new FormData();
+    formData.append('title', title);
+    formData.append('body', body);
+    formData.append('image', image);
+
+    this.props.createNewNewsletter(formData, () => {
+        this.props.history.push("/dashboard");
+    })
+    
+  };
+
+  onCancel = () => {
+    this.props.history.push("/dashboard");
+  };
+
+  render() {
+    return (
+      <div className="new-newsletter">
+        <NewNewsletterForm
+          onCancel={() => this.onCancel()}
+          onSubmit={event => this.onSubmit(event)}
+          formTitle='New Newsletter'
+          fieldOnePlaceholder='Newsletter Title'
+          fieldOneTitle='Newsletter Title'
+          fieldTwoPlaceholder='Body Here'
+          fieldTwoTitle='Body'
+        />
+      </div>
+    );
+  }
 }
+
+NewNewsletter = connect(null, actions)(NewNewsletter);
 
 export default NewNewsletter;
